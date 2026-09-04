@@ -1,0 +1,102 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ТИПОГРАФИКА
+   ────────────────────────────────────────────────────────────────────────
+   Масштаб в em (принцип ids): всё едет за флюидным корнем. Заголовки —
+   Flame. Утилиты размеров (.ku-display / .ku-h1 …) + прозрачный «.ku-prose»
+   для длинного текста (лонгрид курса).
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* — Заголовки по умолчанию — */
+h1, h2, h3, h4, h5, h6, .ku-display {
+  font-family: var(--ku-font-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ku-text);
+  text-wrap: balance;
+}
+
+/* — Размерные утилиты (не завязаны на уровень тега) — */
+.ku-display {
+  font-size: clamp(2.4rem, 1.6rem + 4vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+.ku-h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); }
+.ku-h2 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); }
+.ku-h3 { font-size: 1.5rem; }
+.ku-h4 { font-size: 1.2rem; }
+/* Надзаголовок-«пилюля» в контрастном цвете подраздела (как на обложках МС).
+   Текст — --ku-contrast-on (белый; тёмный для светлых контрастов). */
+.ku-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.5em 0.95em;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-contrast);
+  color: var(--ku-contrast-on);
+  font-family: var(--ku-font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.ku-eyebrow .ku-ico { color: inherit; }
+
+/* — Текстовые утилиты —
+   .ku-lead и .ku-prose ограничивают себя мерой (--ku-measure ≈ 66–72
+   знака): сплошной текст не растянется на всю ширину экрана, даже если
+   лежит в широкой обёртке. В центрированном контексте (.ku-center)
+   колонка центрируется сама. */
+.ku-lead   { font-size: 1.2rem; line-height: 1.55; color: var(--ku-text-soft); max-width: var(--ku-measure); }
+.ku-body   { font-size: 1rem; line-height: 1.65; }
+.ku-small  { font-size: 0.85rem; }
+.ku-caption{ font-size: 0.78rem; color: var(--ku-text-muted); }
+.ku-muted  { color: var(--ku-text-muted); }
+.ku-soft   { color: var(--ku-text-soft); }
+
+/* Акцентный «пламенный» текст-градиент (для крупных слов) */
+.ku-flame-text {
+  background: var(--ku-grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Прозаический поток статьи ───────────────────────────────────────── */
+.ku-prose { color: var(--ku-text); font-size: 1.05rem; line-height: 1.7; max-width: var(--ku-measure); }
+.ku-center .ku-prose, .ku-center .ku-lead,
+.ku-prose.ku-mx-auto, .ku-lead.ku-mx-auto { margin-inline: auto; }
+.ku-prose > * + * { margin-top: 1em; }
+.ku-prose h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); margin-top: 1.6em; }
+.ku-prose h3 { font-size: 1.4rem; margin-top: 1.4em; }
+.ku-prose p  { margin: 0; }
+.ku-prose a {
+  color: var(--ku-brand-strong);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ku-brand) 35%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color var(--ku-dur-fast) var(--ku-ease);
+}
+.ku-prose a:hover { text-decoration-color: var(--ku-brand); }
+.ku-prose strong { font-weight: 700; color: var(--ku-text); }
+.ku-prose mark {
+  background: color-mix(in srgb, var(--ku-warning) 55%, transparent);
+  color: var(--ku-text);
+  padding: 0.05em 0.2em;
+  border-radius: 0.2em;
+}
+.ku-prose ul, .ku-prose ol { margin: 0; padding-left: 1.3em; }
+.ku-prose li { margin-bottom: 0.4em; }
+.ku-prose ul li::marker { color: var(--ku-brand); }
+.ku-prose blockquote {
+  margin: 0;
+  padding: 0.2em 0 0.2em 1em;
+  border-left: 3px solid var(--ku-brand);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ku-text-soft);
+}

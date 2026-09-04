@@ -1,0 +1,71 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ИКОНКИ (Lucide, MIT)
+   ────────────────────────────────────────────────────────────────────────
+   Два способа, оба красят иконку ЦВЕТОМ ТЕКСТА (currentColor) → цвет едет
+   за палитрой и подразделом автоматически.
+
+   1) Инлайн-SVG прямо в разметке — самый надёжный (в т.ч. file://).
+      Lucide рисует stroke="currentColor", поэтому достаточно задать color.
+      Класс .ku-ico задаёт размер и выравнивание.
+
+   2) Маска (.ku-icon + --ku-icon:url(...)) — когда иконку удобно задать из CSS.
+      background = currentColor, форму вырезает маска из svg-файла.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* — Инлайн-SVG — */
+.ku-ico {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  vertical-align: -0.2em;
+  color: inherit;
+  /* Стилизуем как Lucide через CSS — эти свойства наследуются внутрь <use>,
+     в отличие от presentation-атрибутов на <symbol>/<g>. */
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ku-ico.s  { width: 1em;   height: 1em;  vertical-align: -0.15em; }
+.ku-ico.l  { width: 1.6em; height: 1.6em; }
+.ku-ico.xl { width: 2.4em; height: 2.4em; }
+.ku-ico > svg, .ku-ico > use { width: 100%; height: 100%; display: block; }
+
+/* — Маска из файла — */
+.ku-icon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: var(--ku-icon) center / contain no-repeat;
+  mask: var(--ku-icon) center / contain no-repeat;
+}
+
+/* — Цветовые модификаторы (наследуются любым содержимым иконки) — */
+.ku-ico.brand,  .ku-icon.brand  { color: var(--ku-brand); }
+.ku-ico.success,.ku-icon.success{ color: var(--ku-success); }
+.ku-ico.danger, .ku-icon.danger { color: var(--ku-danger); }
+.ku-ico.muted,  .ku-icon.muted  { color: var(--ku-text-muted); }
+
+/* — Круглый «жетон» с иконкой (для карточек/хабов) — */
+.ku-icon-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 3.25em;
+  height: 3.25em;
+  border-radius: var(--ku-radius-m);
+  background: var(--ku-brand-soft);
+  color: var(--ku-brand-strong);
+  box-shadow: inset 0 0 0 1px var(--ku-border-soft);
+  transition: transform var(--ku-dur-base) var(--ku-ease-spring),
+              box-shadow var(--ku-dur-base) var(--ku-ease);
+}
+.ku-icon-badge.round { border-radius: var(--ku-radius-pill); }
+.ku-icon-badge.solid {
+  background: var(--ku-grad-brand);
+  color: var(--ku-brand-on);
+  box-shadow: var(--ku-shadow-brand);
+}
+.ku-icon-badge .ku-ico { width: 1.5em; height: 1.5em; }

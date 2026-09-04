@@ -1,0 +1,34 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ДИЗАЙН-СИСТЕМА КОРПОРАТИВНЫХ КУРСОВ — единая точка подключения
+   ────────────────────────────────────────────────────────────────────────
+   <link rel="stylesheet" href="css/kuds.css">
+
+   Порядок импортов = порядок каскада. Токены идут снизу вверх по слоям
+   (палитра → семантика → шкалы → подразделы), затем база, композиция и
+   компоненты. Подразделы импортируются ПОСЛЕ семантики и шкал, чтобы их
+   переопределения бренд-акцента гарантированно побеждали.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* 1 · Токены */
+@import "tokens/palette.css";       /* сырые цвета — источник правды       */
+@import "tokens/colors.css";        /* семантика + тёмная тема             */
+@import "tokens/scales.css";        /* отступы, радиусы, тайминги, тени     */
+@import "tokens/subsections.css";   /* ЦА-подразделы (механизм «переодеть») */
+
+/* 2 · База */
+@import "base/fonts.css";           /* шрифты + флюидный корень            */
+@import "base/reset.css";
+@import "base/typography.css";
+
+/* 3 · Композиция (отступы в классах) */
+@import "layout.css";
+
+/* 4 · Компоненты */
+@import "components/icon.css";
+@import "components/buttons.css";
+@import "components/nav.css";
+@import "components/cards.css";
+@import "components/interactive.css";
+@import "components/content.css";
+@import "components/infographic.css";
+@import "components/misc.css";

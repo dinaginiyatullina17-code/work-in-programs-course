@@ -1,0 +1,94 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · СЛОЙ 2 — СЕМАНТИЧЕСКИЕ ЦВЕТА
+   ────────────────────────────────────────────────────────────────────────
+   Принцип из ids: имена функциональные («для чего», а не «какой цвет»).
+   Компоненты используют ТОЛЬКО эти токены — поэтому смена бренда/темы/
+   подраздела не требует правок в компонентах.
+
+   Переключение темы (светлая ⇄ тёмная) живёт здесь.
+   Переключение подраздела (ЦА) живёт в subsections.css и переопределяет
+   бренд-акцент ПОВЕРХ этого файла — см. --ku-brand-* там.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: light;
+
+  /* — Бренд-акцент —
+     ВНИМАНИЕ: сами значения --ku-brand / --ku-contrast / оттенки / градиенты
+     задаёт подраздел (tokens/subsections.css) — там же их «деривация» из двух
+     цветов. Здесь только --ku-brand-on (цвет текста поверх бренд-заливки),
+     т.к. он семантический и от подраздела не зависит. */
+  --ku-brand-on:     #ffffff;            /* текст на бренд-заливке */
+
+  /* — Поверхности — */
+  --ku-bg:           var(--ku__white);          /* фон страницы */
+  --ku-surface:      var(--ku__cream-100);       /* мягкий фон блоков */
+  --ku-surface-2:    var(--ku__cream-200);       /* второй уровень */
+  --ku-card:         var(--ku__white);           /* фон карточек */
+  --ku-elevated:     var(--ku__white);           /* всплывающее (модалка) */
+
+  /* — Текст — */
+  --ku-text:         var(--ku__ink-600);
+  --ku-text-soft:    var(--ku__ink-500);
+  --ku-text-muted:   color-mix(in srgb, var(--ku__ink-500) 60%, transparent);
+  --ku-text-on-dark: var(--ku__cream-50);
+
+  /* — Линии и границы — */
+  --ku-border:       color-mix(in srgb, var(--ku__ink-600) 14%, transparent);
+  --ku-border-soft:  color-mix(in srgb, var(--ku__ink-600) 8%, transparent);
+  --ku-divider:      var(--ku__cream-300);
+
+  /* — Функциональные — */
+  --ku-success:      var(--ku__green-500);
+  --ku-success-soft: var(--ku__green-100);
+  --ku-danger:       var(--ku__ember-500);
+  --ku-danger-soft:  var(--ku__ember-50);
+  --ku-warning:      var(--ku__amber-400);
+  --ku-warning-soft: var(--ku__amber-100);
+  --ku-info:         var(--ku__sky-500);
+  --ku-info-soft:    var(--ku__sky-100);
+
+  /* — Инфографика: 5 различимых серий (доступные пары) — */
+  --ku-viz-1: var(--ku__flame-500);
+  --ku-viz-2: var(--ku__sky-500);
+  --ku-viz-3: var(--ku__green-500);
+  --ku-viz-4: var(--ku__amber-400);
+  --ku-viz-5: var(--ku__ink-500);
+}
+
+/* ── Тёмная тема ────────────────────────────────────────────────────────
+   Ставится классом .ku-dark или [data-theme="dark"] на <html>.
+   Меняем только семантику; палитра и подраздел остаются те же. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ku-brand-soft:   color-mix(in srgb, var(--ku-brand) 16%, var(--ku__night-800));
+  --ku-brand-on:     #1c1206;
+  --ku-grad-brand-soft: linear-gradient(135deg,
+                      color-mix(in srgb, var(--ku-brand) 22%, var(--ku__night-800)),
+                      var(--ku__night-800));
+
+  --ku-bg:           var(--ku__night-900);
+  --ku-surface:      var(--ku__night-800);
+  --ku-surface-2:    var(--ku__night-700);
+  --ku-card:         var(--ku__night-800);
+  --ku-elevated:     var(--ku__night-700);
+
+  --ku-text:         var(--ku__cream-100);
+  --ku-text-soft:    color-mix(in srgb, var(--ku__cream-100) 78%, transparent);
+  --ku-text-muted:   color-mix(in srgb, var(--ku__cream-100) 52%, transparent);
+  --ku-text-on-dark: var(--ku__cream-50);
+
+  --ku-border:       color-mix(in srgb, var(--ku__cream-100) 16%, transparent);
+  --ku-border-soft:  color-mix(in srgb, var(--ku__cream-100) 9%, transparent);
+  --ku-divider:      color-mix(in srgb, var(--ku__cream-100) 12%, transparent);
+
+  --ku-success-soft: color-mix(in srgb, var(--ku__green-500) 20%, var(--ku__night-800));
+  --ku-danger-soft:  color-mix(in srgb, var(--ku__ember-500) 20%, var(--ku__night-800));
+  --ku-warning-soft: color-mix(in srgb, var(--ku__amber-400) 18%, var(--ku__night-800));
+  --ku-info-soft:    color-mix(in srgb, var(--ku__sky-500)  20%, var(--ku__night-800));
+}
+
+body {
+  color: var(--ku-text);
+  background-color: var(--ku-bg);
+}

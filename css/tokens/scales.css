@@ -1,0 +1,77 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · СЛОЙ 3 — ШКАЛЫ (размеры, радиусы, тайминги, тени)
+   ────────────────────────────────────────────────────────────────────────
+   Принцип из ids:
+     • Отступы — в rem: считаются от корневого (флюидного) фонт-сайза, не
+       зависят от локального контекста. Умножаются на --ku-density.
+     • Радиусы — в em: скругление масштабируется вместе с текстом компонента.
+     • Отступы хранятся в КЛАССАХ (см. layout.css), а не хардкодятся в компонентах.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Плотность макета. Один рычаг «воздушности» всего проекта. */
+  --ku-density: 1;
+
+  /* Шкала отступов (рем × плотность) */
+  --ku-space-3xs: calc(var(--ku-density) * 0.25rem);
+  --ku-space-2xs: calc(var(--ku-density) * 0.5rem);
+  --ku-space-xs:  calc(var(--ku-density) * 0.75rem);
+  --ku-space-s:   calc(var(--ku-density) * 1rem);
+  --ku-space-m:   calc(var(--ku-density) * 1.5rem);
+  --ku-space-l:   calc(var(--ku-density) * 2.5rem);
+  --ku-space-xl:  calc(var(--ku-density) * 4rem);
+  --ku-space-2xl: calc(var(--ku-density) * 6rem);
+
+  /* Гэпы сеток */
+  --ku-gap-s: 0.5rem;
+  --ku-gap-m: 1rem;
+  --ku-gap-l: 1.5rem;
+
+  /* Ширина читаемой колонки (мера). 38rem ≈ 760px на большом десктопе —
+     это 66–72 знака в строке: стандарт читаемости (Брингхёрст ~66,
+     WCAG 1.4.8 ≤ 80). .ku-prose и .ku-lead сами ограничиваются этой мерой. */
+  --ku-measure: 38rem;
+
+  /* Радиусы (em — тянутся за размером текста компонента) */
+  --ku-radius-s:    0.5em;
+  --ku-radius-m:    0.85em;
+  --ku-radius-l:    1.25em;
+  --ku-radius-xl:   1.75em;
+  --ku-radius-pill: 9999px;
+
+  /* Толщина линий */
+  --ku-border-w:    1px;
+  --ku-border-w-2:  2px;
+
+  /* Тайминги и кривые (микроанимация — подпись ДС) */
+  --ku-dur-instant: 0.06s;
+  --ku-dur-fast:    0.16s;
+  --ku-dur-base:    0.28s;
+  --ku-dur-slow:    0.5s;
+  --ku-dur-reveal:  0.65s;
+  --ku-ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --ku-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);   /* мягкое «выкатывание» */
+  --ku-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* лёгкий «перелёт» */
+
+  /* Тени — тёплые (тонированы под коричневый бренда, не серые) */
+  --ku-shadow-xs: 0 1px 2px rgba(80, 35, 20, 0.06);
+  --ku-shadow-s:  0 2px 8px rgba(80, 35, 20, 0.08);
+  --ku-shadow-m:  0 8px 24px rgba(80, 35, 20, 0.12);
+  --ku-shadow-l:  0 18px 48px rgba(80, 35, 20, 0.18);
+  --ku-shadow-brand: 0 10px 28px color-mix(in srgb, var(--ku-brand) 35%, transparent);
+}
+
+[data-theme="dark"] {
+  --ku-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --ku-shadow-s:  0 2px 10px rgba(0, 0, 0, 0.45);
+  --ku-shadow-m:  0 10px 30px rgba(0, 0, 0, 0.55);
+  --ku-shadow-l:  0 20px 56px rgba(0, 0, 0, 0.6);
+  --ku-shadow-brand: 0 10px 30px color-mix(in srgb, var(--ku-brand) 45%, transparent);
+}
+
+/* Уважаем настройку «меньше движения» глобально */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ku-dur-instant: 0s; --ku-dur-fast: 0s; --ku-dur-base: 0s;
+    --ku-dur-slow: 0s; --ku-dur-reveal: 0s;
+  }
+}

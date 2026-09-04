@@ -1,0 +1,156 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ПРОЧИЕ КОМПОНЕНТЫ
+   Галерея · Бейджи/теги · Таблица · Модалка · Слот изображения · Тултип
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Галерея / карусель ──────────────────────────────────────────────── */
+.ku-gallery { position: relative; overflow: hidden; border-radius: var(--ku-radius-l); }
+.ku-gallery__track { display: flex; transition: transform var(--ku-dur-slow) var(--ku-ease-out); }
+.ku-gallery__slide { min-width: 100%; }
+.ku-gallery__slide img { width: 100%; height: 100%; object-fit: cover; }
+.ku-gallery__controls { display: flex; justify-content: center; align-items: center; gap: 1em; margin-top: var(--ku-space-s); }
+.ku-gallery__btn {
+  width: 2.4em; height: 2.4em;
+  display: grid; place-items: center;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-card); color: var(--ku-brand-strong);
+  box-shadow: var(--ku-shadow-s), inset 0 0 0 1.5px var(--ku-brand);
+  transition: transform var(--ku-dur-fast) var(--ku-ease-out), background-color var(--ku-dur-fast), color var(--ku-dur-fast);
+}
+.ku-gallery__btn:hover { background: var(--ku-brand); color: var(--ku-brand-on); transform: scale(1.08); box-shadow: var(--ku-shadow-brand); }
+.ku-gallery__dots { display: flex; gap: 0.5em; }
+.ku-gallery__dot { width: 0.55em; height: 0.55em; border-radius: 50%; background: var(--ku-surface-2); cursor: pointer; transition: all var(--ku-dur-fast) var(--ku-ease); }
+.ku-gallery__dot.active { background: var(--ku-brand); width: 1.5em; border-radius: var(--ku-radius-pill); }
+
+/* ── Бейджи / теги ───────────────────────────────────────────────────── */
+.ku-badge {
+  display: inline-flex; align-items: center; gap: 0.35em;
+  padding: 0.3em 0.75em;
+  border-radius: var(--ku-radius-pill);
+  font-size: 0.75rem; font-weight: 700;
+  background: var(--ku-brand-soft); color: var(--ku-brand-strong);
+  line-height: 1.2;
+}
+.ku-badge.solid { background: var(--ku-grad-brand); color: var(--ku-brand-on); }
+.ku-badge.success { background: var(--ku-success-soft); color: var(--ku__green-600); }
+.ku-badge.neutral { background: var(--ku-surface-2); color: var(--ku-text-soft); }
+[data-theme="dark"] .ku-badge.success { color: var(--ku__green-100); }
+
+/* ── Таблица данных ──────────────────────────────────────────────────── */
+.ku-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.ku-table th, .ku-table td { padding: 0.85em 1em; text-align: left; vertical-align: top; }
+.ku-table thead th {
+  font-family: var(--ku-font-body); font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ku-text-muted);
+  border-bottom: 2px solid var(--ku-border);
+  position: sticky; top: 0; background: var(--ku-bg);
+}
+.ku-table tbody tr { transition: background-color var(--ku-dur-fast) var(--ku-ease); }
+.ku-table tbody tr:hover { background: var(--ku-surface-2); }
+.ku-table tbody td { border-bottom: 1px solid var(--ku-border-soft); }
+.ku-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── Слот изображения (с фолбэком-подписью) ──────────────────────────── */
+.ku-img {
+  position: relative;
+  background: var(--ku-surface);
+  border-radius: var(--ku-radius-l);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+.ku-img img { width: 100%; height: 100%; object-fit: cover; }
+.ku-img.contain img { object-fit: contain; }
+.ku-img__ph {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5em;
+  color: var(--ku-text-muted); font-size: 0.85rem; text-align: center; padding: 1em;
+}
+.ku-img img[src]:not([src=""]) ~ .ku-img__ph { display: none; }
+
+/* ── Соотношение сторон 16:9 для видео ───────────────────────────────── */
+.ku-ratio { position: relative; padding-top: 56.25%; border-radius: var(--ku-radius-l); overflow: hidden; background: #111; }
+.ku-ratio > * { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ── Модальное окно ──────────────────────────────────────────────────── */
+.ku-modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 9999;
+  align-items: center; justify-content: center;
+  padding: var(--ku-space-s);
+  background: color-mix(in srgb, var(--ku-brand) 30%, rgba(12, 15, 22, 0.62));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.ku-modal-overlay.open { display: flex; animation: ku-fade var(--ku-dur-base) var(--ku-ease); }
+.ku-modal {
+  position: relative;
+  width: 100%; max-width: 26rem;
+  background: var(--ku-elevated);
+  border-radius: var(--ku-radius-xl);
+  padding: var(--ku-space-l) var(--ku-space-m) var(--ku-space-m);
+  box-shadow: var(--ku-shadow-l);
+  animation: ku-modal-in var(--ku-dur-base) var(--ku-ease-out);
+}
+.ku-modal__close {
+  position: absolute; top: 0.9em; right: 0.9em;
+  width: 2em; height: 2em;
+  display: grid; place-items: center;
+  border-radius: var(--ku-radius-pill);
+  color: var(--ku-text-muted);
+  transition: background-color var(--ku-dur-fast), color var(--ku-dur-fast);
+}
+.ku-modal__close:hover { background: var(--ku-surface); color: var(--ku-text); }
+@keyframes ku-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ku-modal-in { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* ── Тултип ──────────────────────────────────────────────────────────── */
+.ku-tip { position: relative; border-bottom: 1.5px dotted var(--ku-brand); cursor: help; }
+.ku-tip::after {
+  content: attr(data-tip);
+  position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(4px);
+  width: max-content; max-width: 15rem;
+  padding: 0.5em 0.75em;
+  border-radius: var(--ku-radius-s);
+  background: color-mix(in srgb, var(--ku-brand) 26%, #171c24); color: #fff;
+  font-size: 0.78rem; line-height: 1.4;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--ku-dur-fast) var(--ku-ease), transform var(--ku-dur-fast) var(--ku-ease-out);
+  box-shadow: var(--ku-shadow-m);
+  z-index: 50;
+}
+.ku-tip:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Сводка ответов ([data-ku-report] — рендерит ku-scorm.js) ─────────
+   «Лист наставнику»: пары «подпись → значение» из переменных курса.
+   Размещай на белом surface (как callout). */
+.ku-report {
+  background: var(--ku-card);
+  border: 1px solid var(--ku-border);
+  border-radius: var(--ku-radius-l);
+  padding: var(--ku-space-m);
+  box-shadow: var(--ku-shadow-s);
+}
+.ku-report__row { padding: 0.7em 0; border-bottom: 1px solid var(--ku-border-soft); }
+.ku-report__row:last-child { border-bottom: none; }
+.ku-report__label {
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--ku-text-muted);
+  margin-bottom: 0.25em;
+}
+.ku-report__value { font-size: 0.98rem; line-height: 1.55; white-space: pre-wrap; }
+.ku-report__empty { margin: 0; color: var(--ku-text-muted); font-size: 0.9rem; }
+
+/* Кнопка «Завершить» после срабатывания */
+[data-ku-complete].is-completed {
+  pointer-events: none;
+  background: var(--ku-success);
+  box-shadow: none;
+}
+
+/* ── Swatch-строка палитры (для самой ДС) ────────────────────────────── */
+.ku-swatch { border-radius: var(--ku-radius-m); overflow: hidden; box-shadow: var(--ku-shadow-xs); border: 1px solid var(--ku-border-soft); }
+.ku-swatch__chip { height: 3.5rem; }
+.ku-swatch__meta { padding: 0.5em 0.7em; font-size: 0.75rem; background: var(--ku-card); }
+.ku-swatch__meta b { display: block; font-size: 0.8rem; }
+.ku-swatch__meta span { color: var(--ku-text-muted); font-variant-numeric: tabular-nums; }

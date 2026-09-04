@@ -1,0 +1,212 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ИНТЕРАКТИВЫ (ядро курса)
+   ────────────────────────────────────────────────────────────────────────
+   Сортировка · Drag-and-drop по зонам · Выбор варианта / тест · Блок фидбэка.
+   Логика — в js/kuds.js (портирована из reusable). Здесь — вид: тёплые тени,
+   градиентные акценты, «пружина» и подсветка зон.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Обёртка упражнения ──────────────────────────────────────────────── */
+.ku-exercise {
+  background: var(--ku-card);
+  border: 1px solid var(--ku-border);
+  border-radius: var(--ku-radius-l);
+  padding: var(--ku-space-m);
+  box-shadow: var(--ku-shadow-s);
+}
+.ku-exercise__label {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-family: var(--ku-font-body); font-weight: 700; font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ku-brand);
+  margin-bottom: var(--ku-space-2xs);
+}
+
+/* Решённое упражнение: класс .is-done ставит SCORM-рантайм (ku-scorm.js)
+   при верном ответе и при восстановлении прогресса между сессиями.
+   Дефолт — бейдж «Решено» у лейбла; поведение внутри (блокировать ли
+   повторное прохождение) решает разметка конкретного курса. */
+.ku-exercise.is-done .ku-exercise__label::after {
+  content: "✓ решено";
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.25em 0.7em;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-success-soft);
+  color: var(--ku-success);
+}
+
+/* ── 1. Сортировка списка (перетаскивание по вертикали) ──────────────── */
+.ku-sortable { display: flex; flex-direction: column; gap: 0.6em; }
+.ku-sort-item {
+  display: flex; align-items: center; gap: 0.8em;
+  background: var(--ku-card);
+  border: 1.5px solid var(--ku-border);
+  border-radius: var(--ku-radius-m);
+  padding: 0.9em 1em;
+  font-size: 0.95rem;
+  cursor: grab;
+  transition: border-color var(--ku-dur-fast) var(--ku-ease),
+              box-shadow var(--ku-dur-fast) var(--ku-ease),
+              transform var(--ku-dur-fast) var(--ku-ease-out),
+              opacity var(--ku-dur-fast);
+}
+.ku-sort-item:hover { border-color: color-mix(in srgb, var(--ku-brand) 50%, var(--ku-border)); box-shadow: var(--ku-shadow-s); }
+.ku-sort-item:active { cursor: grabbing; }
+.ku-sort-item.dragging { opacity: 0.35; transform: scale(0.98); }
+.ku-sort-item.drag-over-top    { box-shadow: 0 -3px 0 var(--ku-brand); }
+.ku-sort-item.drag-over-bottom { box-shadow: 0  3px 0 var(--ku-brand); }
+.ku-sort-handle { color: var(--ku-brand); display: flex; cursor: grab; }
+.ku-sort-item__num {
+  flex-shrink: 0;
+  width: 1.7em; height: 1.7em;
+  display: grid; place-items: center;
+  border-radius: var(--ku-radius-s);
+  background: var(--ku-brand-soft); color: var(--ku-brand-strong);
+  font-weight: 700; font-size: 0.8rem;
+}
+
+/* ── 2. Drag-and-drop: чипы → зоны ───────────────────────────────────── */
+.ku-pool {
+  display: flex; flex-wrap: wrap; gap: 0.5em;
+  padding: 0.9em;
+  min-height: 3.5em;
+  background: var(--ku-surface);
+  border: 1.5px dashed var(--ku-border);
+  border-radius: var(--ku-radius-m);
+}
+.ku-chip {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  padding: 0.5em 0.9em;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-grad-brand);
+  color: var(--ku-brand-on);
+  font-size: 0.88rem; font-weight: 700;
+  cursor: grab;
+  user-select: none; touch-action: none;
+  box-shadow: var(--ku-shadow-xs);
+  transition: transform var(--ku-dur-fast) var(--ku-ease-spring),
+              box-shadow var(--ku-dur-fast) var(--ku-ease), opacity var(--ku-dur-fast);
+}
+.ku-chip:hover { transform: translateY(-2px) scale(1.03); box-shadow: var(--ku-shadow-s); }
+.ku-chip:active { cursor: grabbing; }
+.ku-chip.dragging { opacity: 0.5; }
+
+.ku-zones { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ku-gap-m); }
+@media (max-width: 520px) { .ku-zones { grid-template-columns: 1fr; } }
+.ku-zone {
+  padding: 0.9em;
+  min-height: 6em;
+  background: var(--ku-surface);
+  border: 1.5px dashed var(--ku-border);
+  border-radius: var(--ku-radius-m);
+  transition: border-color var(--ku-dur-fast) var(--ku-ease),
+              background-color var(--ku-dur-fast) var(--ku-ease);
+}
+.ku-zone__label {
+  display: flex; align-items: center; gap: 0.4em;
+  font-weight: 700; font-size: 0.85rem; margin-bottom: 0.6em;
+  color: var(--ku-text-soft);
+}
+.ku-zone__drop { display: flex; flex-wrap: wrap; gap: 0.5em; align-content: flex-start; min-height: 2.5em; }
+.ku-zone.drag-over {
+  border-color: var(--ku-brand);
+  border-style: solid;
+  background: var(--ku-brand-soft);
+}
+
+/* ── 3. Выбор варианта / тест ────────────────────────────────────────── */
+.ku-quiz-q { margin-bottom: var(--ku-space-m); }
+.ku-quiz-q:last-child { margin-bottom: 0; }
+.ku-quiz-q.solved { opacity: 0.92; }
+.ku-quiz-q__text { font-weight: 700; font-size: 1rem; margin-bottom: 0.7em; }
+.ku-choices { display: flex; flex-direction: column; gap: 0.5em; }
+.ku-choice {
+  display: flex; align-items: center; gap: 0.7em;
+  text-align: left;
+  background: var(--ku-card);
+  border: 1.5px solid var(--ku-border);
+  border-radius: var(--ku-radius-m);
+  padding: 0.85em 1em;
+  font-size: 0.95rem; color: var(--ku-text);
+  cursor: pointer;
+  transition: border-color var(--ku-dur-fast) var(--ku-ease),
+              background-color var(--ku-dur-fast) var(--ku-ease),
+              transform var(--ku-dur-fast) var(--ku-ease-out);
+}
+.ku-choice__marker {
+  flex-shrink: 0;
+  width: 1.5em; height: 1.5em;
+  display: grid; place-items: center;
+  border-radius: var(--ku-radius-pill);
+  border: 2px solid var(--ku-border);
+  color: transparent;
+  transition: all var(--ku-dur-fast) var(--ku-ease);
+}
+.ku-choice:hover:not(:disabled) { border-color: color-mix(in srgb, var(--ku-brand) 55%, var(--ku-border)); transform: translateX(3px); }
+.ku-choice:disabled { cursor: default; }
+.ku-choice.correct {
+  border-color: var(--ku-success);
+  background: var(--ku-success-soft);
+}
+.ku-choice.correct .ku-choice__marker { border-color: var(--ku-success); background: var(--ku-success); color: #fff; }
+.ku-choice.wrong {
+  border-color: var(--ku-danger);
+  animation: ku-shake 0.4s var(--ku-ease);
+}
+.ku-choice.wrong .ku-choice__marker { border-color: var(--ku-danger); background: var(--ku-danger); color: #fff; }
+@keyframes ku-shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  60% { transform: translateX(7px); }
+}
+
+/* ── 3b. Поля ввода (открытые ответы, расчёты, данные для сводки) ─────
+   Вешай data-ku-var="имя" — значение автосохранится (ku-scorm.js). */
+.ku-input {
+  width: 100%;
+  font-family: var(--ku-font-body);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--ku-text);
+  background: var(--ku-card);
+  border: 1.5px solid var(--ku-border);
+  border-radius: var(--ku-radius-m);
+  padding: 0.8em 1em;
+  transition: border-color var(--ku-dur-fast) var(--ku-ease),
+              box-shadow var(--ku-dur-fast) var(--ku-ease);
+  resize: vertical;
+}
+.ku-input::placeholder { color: var(--ku-text-muted); }
+.ku-input:hover { border-color: color-mix(in srgb, var(--ku-brand) 45%, var(--ku-border)); }
+.ku-input:focus {
+  outline: none;
+  border-color: var(--ku-brand);
+  box-shadow: 0 0 0 3px var(--ku-brand-ring);
+}
+.ku-input.num { max-width: 10em; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* ── 4. Блок обратной связи ──────────────────────────────────────────── */
+.ku-feedback {
+  display: none;
+  align-items: flex-start; gap: 0.7em;
+  margin-top: var(--ku-space-s);
+  border-radius: var(--ku-radius-m);
+  padding: 0.9em 1.1em;
+  font-size: 0.95rem; line-height: 1.5;
+  animation: ku-pop var(--ku-dur-base) var(--ku-ease-out);
+}
+.ku-feedback.show { display: flex; }
+.ku-feedback .ku-ico { margin-top: 0.1em; }
+.ku-feedback.correct   { background: var(--ku-success-soft); color: var(--ku__green-600); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ku-success) 40%, transparent); }
+.ku-feedback.incorrect { background: var(--ku-danger-soft);  color: var(--ku__ember-700); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ku-danger) 40%, transparent); }
+[data-theme="dark"] .ku-feedback.correct { color: var(--ku__green-100); }
+[data-theme="dark"] .ku-feedback.incorrect { color: var(--ku__ember-100); }
+@keyframes ku-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Пошаговый тест по видео */
+.ku-quiz-step { display: none; }
+.ku-quiz-step.active { display: block; animation: ku-pop var(--ku-dur-base) var(--ku-ease-out); }
+.ku-quiz-done.hidden { display: none; }

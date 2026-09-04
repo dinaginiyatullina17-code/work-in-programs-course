@@ -1,0 +1,121 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · КОНТЕНТНЫЕ БЛОКИ
+   Аккордеон · Выноски (callout) · Маргиналии · Цитаты-диалоги · Появление
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Появление по скроллу (.fade-in → .visible) ─────────────────────── */
+.ku-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity var(--ku-dur-reveal) var(--ku-ease-out),
+              transform var(--ku-dur-reveal) var(--ku-ease-out);
+}
+.ku-reveal.visible { opacity: 1; transform: none; }
+/* Каскад: задержки для группы (ставь .ku-reveal с style="--d:1|2|3…") */
+.ku-reveal { transition-delay: calc(var(--d, 0) * 80ms); }
+
+/* ── Аккордеон ───────────────────────────────────────────────────────── */
+.ku-accordion { border-radius: var(--ku-radius-l); overflow: hidden; border: 1px solid var(--ku-border); }
+.ku-acc-item { border-bottom: 1px solid var(--ku-border-soft); background: var(--ku-card); }
+.ku-acc-item:last-child { border-bottom: none; }
+.ku-acc-q {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between; gap: 1em;
+  padding: 1.1em 1.2em;
+  font-family: var(--ku-font-body); font-weight: 700; font-size: 1rem;
+  color: var(--ku-text); text-align: left;
+  transition: background-color var(--ku-dur-fast) var(--ku-ease), color var(--ku-dur-fast) var(--ku-ease);
+}
+.ku-acc-q:hover { background: var(--ku-surface-2); color: var(--ku-brand-strong); }
+.ku-acc-q__icon {
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  width: 1.8em; height: 1.8em;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-brand-soft); color: var(--ku-brand-strong);
+  transition: transform var(--ku-dur-base) var(--ku-ease-spring), background-color var(--ku-dur-base);
+}
+.ku-acc-q.open .ku-acc-q__icon { transform: rotate(180deg); background: var(--ku-grad-brand); color: var(--ku-brand-on); }
+.ku-acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--ku-dur-base) var(--ku-ease);
+}
+.ku-acc-body.open { grid-template-rows: 1fr; }
+.ku-acc-body > div { overflow: hidden; }
+.ku-acc-body__inner { padding: 0 1.2em 1.2em; color: var(--ku-text-soft); line-height: 1.6; }
+
+/* ── Выноска (callout) ───────────────────────────────────────────────────
+   ПРАВИЛО ИСПОЛЬЗОВАНИЯ: выноски (Главное / Хорошая практика / Внимание …)
+   размещаются ТОЛЬКО на белом surface (--ku-card / --ku-bg). На тонированных
+   поверхностях их подложка (--ku-brand-soft и функциональные *-soft) теряет
+   контраст и «мутнеет». */
+.ku-callout {
+  display: flex; gap: 0.9em;
+  background: var(--ku-brand-soft);
+  border-left: 4px solid var(--ku-brand);
+  border-radius: 0 var(--ku-radius-m) var(--ku-radius-m) 0;
+  padding: 1.1em 1.2em;
+  line-height: 1.55;
+}
+.ku-callout__icon { flex-shrink: 0; color: var(--ku-brand-strong); }
+.ku-callout__title { font-weight: 700; margin-bottom: 0.2em; }
+.ku-callout p { margin: 0; color: var(--ku-text-soft); }
+.ku-callout.success { background: var(--ku-success-soft); border-left-color: var(--ku-success); }
+.ku-callout.success .ku-callout__icon { color: var(--ku-success); }
+.ku-callout.warning { background: var(--ku-warning-soft); border-left-color: var(--ku-warning); }
+.ku-callout.warning .ku-callout__icon { color: color-mix(in srgb, var(--ku-warning) 80%, var(--ku-text)); }
+.ku-callout.danger  { background: var(--ku-danger-soft);  border-left-color: var(--ku-danger); }
+.ku-callout.danger .ku-callout__icon { color: var(--ku-danger); }
+.ku-callout.info    { background: var(--ku-info-soft);    border-left-color: var(--ku-info); }
+.ku-callout.info .ku-callout__icon { color: var(--ku-info); }
+
+/* ── Маргиналия (заметка на полях) ───────────────────────────────────── */
+.ku-with-margin { display: flex; flex-direction: column; gap: var(--ku-space-s); }
+@media (min-width: 900px) {
+  .ku-with-margin { flex-direction: row; align-items: flex-start; gap: var(--ku-space-l); }
+  .ku-with-margin > :first-child { flex: 1; min-width: 0; }
+  .ku-with-margin > .ku-margin-note { width: 12rem; flex-shrink: 0; }
+}
+.ku-margin-note { border-left: 2px solid var(--ku-brand); padding-left: 0.9em; }
+.ku-margin-note__eyebrow { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ku-brand); margin-bottom: 0.4em; }
+.ku-margin-note__title { font-family: var(--ku-font-display); font-size: 1rem; margin-bottom: 0.4em; }
+.ku-margin-note__text { font-size: 0.8rem; line-height: 1.55; color: var(--ku-text-muted); margin: 0; }
+
+/* ── Диалоги / пузыри речи ───────────────────────────────────────────── */
+.ku-speech { display: flex; align-items: flex-start; gap: 0.7em; margin-bottom: 0.8em; }
+.ku-speech__avatar {
+  flex-shrink: 0; width: 2.6em; height: 2.6em;
+  border-radius: var(--ku-radius-pill);
+  display: grid; place-items: center;
+  background: var(--ku-surface-2); color: var(--ku-brand-strong);
+  font-weight: 700;
+}
+.ku-speech__bubble {
+  background: var(--ku-card);            /* белая заливка — это «пузырь», а не текст */
+  border: 1px solid var(--ku-border-soft);
+  border-radius: var(--ku-radius-m) var(--ku-radius-m) var(--ku-radius-m) 4px;
+  padding: 0.8em 1em; line-height: 1.5; font-size: 0.95rem;
+  box-shadow: var(--ku-shadow-s);
+}
+.ku-speech.reply { flex-direction: row-reverse; }
+.ku-speech.reply .ku-speech__bubble {
+  background: var(--ku-grad-brand); color: var(--ku-brand-on);
+  border: none;
+  border-radius: var(--ku-radius-m) var(--ku-radius-m) 4px var(--ku-radius-m);
+  box-shadow: var(--ku-shadow-s);
+}
+.ku-speech.reply .ku-speech__avatar { background: var(--ku-grad-brand); color: var(--ku-brand-on); }
+
+/* ── Цитата с большой кавычкой ───────────────────────────────────────── */
+.ku-quote {
+  position: relative;
+  background: var(--ku-card);
+  border: 1px solid var(--ku-border-soft);
+  box-shadow: var(--ku-shadow-s);
+  border-radius: var(--ku-radius-l);
+  padding: var(--ku-space-m) var(--ku-space-m) var(--ku-space-s);
+}
+.ku-quote__mark { color: var(--ku-brand); opacity: 0.35; margin-bottom: 0.2em; }
+.ku-quote blockquote { border: none; padding: 0; font-family: var(--ku-font-display); font-size: 1.4rem; line-height: 1.3; color: var(--ku-text); }
+.ku-quote figcaption { margin-top: 0.7em; font-size: 0.85rem; color: var(--ku-text-muted); }

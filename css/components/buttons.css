@@ -1,0 +1,111 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · КНОПКИ
+   ────────────────────────────────────────────────────────────────────────
+   Базовый .ku-btn + варианты. Подпись ДС: пламенный градиент, тёплая тень,
+   лёгкий подъём и «пружина» иконки на ховере, вспышка-блик на нажатие.
+   ════════════════════════════════════════════════════════════════════════ */
+.ku-btn {
+  --_bg: var(--ku-surface);
+  --_fg: var(--ku-text);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  padding: 0.8em 1.5em;
+  font-family: var(--ku-font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--_fg);
+  background: var(--_bg);
+  border: none;
+  border-radius: var(--ku-radius-m);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;        /* кнопки-ссылки (<a>) без подчёркивания */
+  isolation: isolate;
+  transition: transform var(--ku-dur-fast) var(--ku-ease-out),
+              box-shadow var(--ku-dur-base) var(--ku-ease),
+              background-color var(--ku-dur-fast) var(--ku-ease),
+              filter var(--ku-dur-fast) var(--ku-ease);
+}
+.ku-btn:hover { transform: translateY(-2px); }
+.ku-btn:active { transform: translateY(0) scale(0.98); transition-duration: var(--ku-dur-instant); }
+.ku-btn .ku-ico { transition: transform var(--ku-dur-base) var(--ku-ease-spring); }
+.ku-btn:hover .ku-ico.arrow { transform: translateX(3px); }
+
+/* Блик, пробегающий по кнопке на ховере */
+.ku-btn::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(110deg, transparent 30%,
+              color-mix(in srgb, #fff 40%, transparent) 50%, transparent 70%);
+  background-size: 220% 100%;
+  background-position: 180% 0;
+  opacity: 0;
+  z-index: -1;
+  transition: background-position 0.6s var(--ku-ease), opacity var(--ku-dur-fast);
+  pointer-events: none;
+}
+.ku-btn.primary:hover::after,
+.ku-btn.success:hover::after { opacity: 1; background-position: -60% 0; }
+
+/* — Основная — сплошной бренд-цвет (без градиента), при наведении темнее — */
+.ku-btn.primary {
+  --_fg: var(--ku-brand-on);
+  background: var(--ku-brand);
+  box-shadow: var(--ku-shadow-brand);
+}
+.ku-btn.primary:hover {
+  background: var(--ku-brand-strong);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--ku-brand) 45%, transparent);
+}
+
+/* — Вторичная (контур) — */
+.ku-btn.secondary {
+  --_bg: transparent;
+  --_fg: var(--ku-brand-strong);
+  box-shadow: inset 0 0 0 var(--ku-border-w-2) var(--ku-brand);
+}
+.ku-btn.secondary:hover { --_bg: var(--ku-brand-soft); }
+
+/* — Мягкая (нейтральная заливка) — */
+.ku-btn.soft {
+  --_bg: var(--ku-surface-2);
+  --_fg: var(--ku-text);
+  box-shadow: var(--ku-shadow-xs);
+}
+.ku-btn.soft:hover { --_bg: color-mix(in srgb, var(--ku-text) 8%, var(--ku-surface-2)); }
+
+/* — Тихая (ghost) — */
+.ku-btn.ghost { --_bg: transparent; --_fg: var(--ku-text-soft); }
+.ku-btn.ghost:hover { --_bg: var(--ku-surface-2); --_fg: var(--ku-text); }
+
+/* — Успех — сплошной зелёный (семантика «подтвердить/зачтено») — */
+.ku-btn.success {
+  --_fg: #fff;
+  background: var(--ku-success);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--ku-success) 32%, transparent);
+}
+.ku-btn.success:hover { background: color-mix(in srgb, var(--ku-success) 80%, #000); }
+
+/* — Размеры: базовый и крупный (мелкие кнопки в ДС не используются) — */
+.ku-btn.l  { padding: 1em 2em; font-size: 1.15rem; }
+.ku-btn.block { display: flex; width: 100%; }
+
+/* — Состояния — */
+.ku-btn:disabled,
+.ku-btn.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+  filter: grayscale(0.3);
+  transform: none;
+}
+.ku-btn:disabled:hover, .ku-btn.is-disabled:hover { transform: none; }
+
+/* — Иконочная кнопка — */
+.ku-btn.icon-only { padding: 0.7em; border-radius: var(--ku-radius-pill); }
+.ku-btn.icon-only .ku-ico { width: 1.35em; height: 1.35em; }

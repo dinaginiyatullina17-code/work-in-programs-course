@@ -1,0 +1,114 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ИНФОГРАФИКА
+   ────────────────────────────────────────────────────────────────────────
+   Стат-плитки · Полосы-сравнения · Кольца прогресса · Таймлайн · Шаги.
+   Значения задаются переменными (--val, --max), анимируются при появлении
+   (класс .visible ставит IntersectionObserver — как у .ku-reveal).
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── Стат-плитка (крупная цифра) ─────────────────────────────────────── */
+.ku-stat {
+  position: relative;
+  overflow: hidden;
+  background: var(--ku-card);
+  border: 1px solid var(--ku-border);
+  border-radius: var(--ku-radius-l);
+  padding: var(--ku-space-m);
+  box-shadow: var(--ku-shadow-s);
+  transition: transform var(--ku-dur-base) var(--ku-ease-out), box-shadow var(--ku-dur-base);
+}
+.ku-stat:hover { transform: translateY(-4px); box-shadow: var(--ku-shadow-m); }
+.ku-stat::before {
+  content: "";
+  position: absolute; right: -20%; top: -40%;
+  width: 60%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--ku-brand) 18%, transparent), transparent 70%);
+  pointer-events: none;
+}
+.ku-stat__icon { color: var(--ku-brand); margin-bottom: 0.4em; }
+.ku-stat__num {
+  font-family: var(--ku-font-display);
+  font-size: clamp(2.2rem, 1.4rem + 3vw, 3.4rem);
+  line-height: 1;
+  background: var(--ku-grad-brand);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.ku-stat__label { margin-top: 0.3em; font-size: 0.9rem; color: var(--ku-text-soft); }
+
+/* ── Полосы-сравнение (горизонтальный бар-чарт) ──────────────────────── */
+.ku-bars { display: flex; flex-direction: column; gap: var(--ku-space-s); }
+.ku-bar__head { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.35em; }
+.ku-bar__val { font-weight: 700; color: var(--ku-brand-strong); }
+.ku-bar__track {
+  height: 0.9em;
+  background: var(--ku-surface-2);
+  border-radius: var(--ku-radius-pill);
+  overflow: hidden;
+}
+.ku-bar__fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--ku-grad-brand);
+  transition: width 1s var(--ku-ease-out);
+  transition-delay: calc(var(--d, 0) * 120ms);
+}
+.ku-bars.visible .ku-bar__fill { width: calc(var(--val) / var(--max, 100) * 100%); }
+/* Разноцветные серии (инфографика на 5 категорий) */
+.ku-bar__fill.v2 { background: linear-gradient(135deg, var(--ku__sky-500), #1e5cad); }
+.ku-bar__fill.v3 { background: linear-gradient(135deg, #33c76a, var(--ku__green-600)); }
+.ku-bar__fill.v4 { background: linear-gradient(135deg, #ffc24d, var(--ku__amber-400)); }
+
+/* ── Кольцо прогресса (conic-gradient) ───────────────────────────────── */
+.ku-ring {
+  --p: 0;             /* 0..100 — целевое значение */
+  --size: 7.5rem;
+  position: relative;
+  width: var(--size); height: var(--size);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(closest-side, var(--ku-card) 71%, transparent 72% 100%),
+    conic-gradient(var(--ku-brand) 0, var(--ku-brand) 0, var(--ku-surface-2) 0);
+  transition: background 1.1s var(--ku-ease-out);
+}
+.ku-ring.visible {
+  background:
+    radial-gradient(closest-side, var(--ku-card) 71%, transparent 72% 100%),
+    conic-gradient(var(--ku-brand) 0, var(--ku-contrast) calc(var(--p) * 1%), var(--ku-surface-2) 0);
+}
+.ku-ring__label {
+  font-family: var(--ku-font-display);
+  font-size: 1.5rem;
+  color: var(--ku-text);
+}
+.ku-ring__wrap { display: flex; flex-direction: column; align-items: center; gap: 0.6em; text-align: center; }
+.ku-ring__wrap .ku-caption { max-width: 9rem; }
+
+/* ── Таймлайн (шаги процесса) ────────────────────────────────────────── */
+.ku-timeline { position: relative; padding-left: 2.2em; }
+.ku-timeline::before {
+  content: "";
+  position: absolute; left: 0.85em; top: 0.4em; bottom: 0.4em;
+  width: 2px;
+  background: linear-gradient(var(--ku-brand), color-mix(in srgb, var(--ku-brand) 20%, transparent));
+}
+.ku-tl-item { position: relative; padding-bottom: var(--ku-space-m); }
+.ku-tl-item:last-child { padding-bottom: 0; }
+.ku-tl-item__dot {
+  position: absolute; left: -2.2em; top: 0;
+  width: 1.7em; height: 1.7em;
+  display: grid; place-items: center;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-grad-brand); color: var(--ku-brand-on);
+  font-size: 0.75rem; font-weight: 700;
+  box-shadow: 0 0 0 4px var(--ku-bg), var(--ku-shadow-brand);
+}
+.ku-tl-item h4 { font-family: var(--ku-font-body); font-weight: 700; margin-bottom: 0.2em; }
+.ku-tl-item p { margin: 0; color: var(--ku-text-soft); font-size: 0.92rem; }
+
+/* ── Донат-легенда для распределения ─────────────────────────────────── */
+.ku-legend { display: flex; flex-direction: column; gap: 0.5em; }
+.ku-legend__item { display: flex; align-items: center; gap: 0.6em; font-size: 0.9rem; }
+.ku-legend__swatch { width: 0.9em; height: 0.9em; border-radius: 0.25em; flex-shrink: 0; }

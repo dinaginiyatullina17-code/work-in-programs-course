@@ -1,0 +1,48 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · RESET (минимальный, принцип ids)
+   ════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ku-font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+}
+
+/* Управление фокусом: убираем кольцо для мыши, оставляем для клавиатуры */
+:where(a, button, input, select, textarea, [tabindex]):focus:not(:focus-visible) {
+  outline: none;
+}
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--ku-border-w-2) solid var(--ku-brand);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+
+/* Атрибут hidden всегда побеждает display компонентов */
+[hidden] { display: none !important; }
+
+button {
+  font-family: inherit;
+  font-size: 100%;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+:where(h1, h2, h3, h4, h5, h6) { margin: 0; }
+
+/* Плавная отрисовка тёплого фона при смене темы/подраздела */
+body {
+  transition: background-color var(--ku-dur-base) var(--ku-ease),
+              color var(--ku-dur-base) var(--ku-ease);
+}

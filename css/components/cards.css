@@ -1,0 +1,148 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · КАРТОЧКИ
+   ────────────────────────────────────────────────────────────────────────
+   • .ku-card — базовая карточка (мягкая тень, подъём и бренд-обводка на ховер)
+   • .ku-chapter — глава с последовательной разблокировкой (.locked)
+   • .ku-hub — раздел хаба (.locked / .done)
+   • .ku-feature — «фичекарточка» равной высоты
+   Подпись ДС: тёплые тени, градиентные жетоны, «свечение» бренд-обводки.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── База ────────────────────────────────────────────────────────────── */
+.ku-card {
+  position: relative;
+  background: var(--ku-card);
+  border: 1px solid var(--ku-border);
+  border-radius: var(--ku-radius-l);
+  padding: var(--ku-space-m);
+  box-shadow: var(--ku-shadow-s);
+  transition: transform var(--ku-dur-base) var(--ku-ease-out),
+              box-shadow var(--ku-dur-base) var(--ku-ease),
+              border-color var(--ku-dur-base) var(--ku-ease);
+}
+.ku-card.pad-l { padding: var(--ku-space-l); }
+.ku-card.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--ku-shadow-m);
+  border-color: color-mix(in srgb, var(--ku-brand) 40%, var(--ku-border));
+}
+/* Тёплое «пламя» на фоне карточки-героя */
+.ku-card.glow::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 80% at 100% 0%,
+              color-mix(in srgb, var(--ku-brand) 14%, transparent), transparent 60%);
+  pointer-events: none;
+}
+
+/* ── Карточка-глава (оглавление курса) ───────────────────────────────── */
+.ku-chapter {
+  display: flex;
+  gap: var(--ku-space-s);
+  align-items: flex-start;
+  cursor: pointer;
+  overflow: hidden;
+}
+.ku-chapter::after {              /* полоска-подсветка слева */
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--ku-grad-brand);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--ku-dur-base) var(--ku-ease-out);
+}
+.ku-chapter:hover::after { transform: scaleY(1); }
+.ku-chapter__num {
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  width: 3em; height: 3em;
+  border-radius: var(--ku-radius-m);
+  font-family: var(--ku-font-display);
+  font-size: 1.35rem;
+  color: var(--ku-brand-on);
+  background: var(--ku-grad-brand);
+  box-shadow: var(--ku-shadow-brand);
+  transition: transform var(--ku-dur-base) var(--ku-ease-spring);
+}
+.ku-chapter:hover .ku-chapter__num { transform: rotate(-6deg) scale(1.06); }
+.ku-chapter__body h3 { font-size: 1.15rem; margin-bottom: 0.2em; transition: color var(--ku-dur-fast); }
+.ku-chapter:hover .ku-chapter__body h3 { color: var(--ku-brand-strong); }
+.ku-chapter__body p { margin: 0; font-size: 0.9rem; color: var(--ku-text-muted); }
+.ku-chapter.full { grid-column: 1 / -1; }
+
+/* Замок-бейдж: виден только когда .locked */
+.ku-lock-badge {
+  position: absolute; top: 0.9em; right: 0.9em;
+  display: none;
+  width: 1.9em; height: 1.9em;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-surface-2);
+  color: var(--ku-text-muted);
+  place-items: center;
+}
+.ku-chapter.locked, .ku-hub.locked {
+  opacity: 0.55;
+  pointer-events: none;
+  filter: grayscale(0.45);
+}
+.ku-chapter.locked .ku-lock-badge { display: grid; }
+.ku-chapter.locked::after { display: none; }
+
+/* ── Карточка раздела хаба (locked / done) ───────────────────────────── */
+.ku-hub {
+  text-align: center;
+  cursor: pointer;
+  padding: var(--ku-space-m) var(--ku-space-s);
+}
+.ku-hub .ku-icon-badge { margin-inline: auto; margin-bottom: var(--ku-space-2xs); }
+.ku-hub h3 { font-size: 1.05rem; margin-bottom: 0.3em; }
+.ku-hub p { margin: 0; font-size: 0.85rem; color: var(--ku-text-muted); }
+.ku-hub:hover:not(.locked):not(.done) {
+  transform: translateY(-4px);
+  box-shadow: var(--ku-shadow-m);
+  border-color: color-mix(in srgb, var(--ku-brand) 40%, var(--ku-border));
+}
+/* Пройденный раздел — в цветах активного подраздела/направления (не зелёный),
+   чтобы вписываться в палитру трека. Галочка сохраняет смысл «пройдено». */
+.ku-hub.done {
+  border-color: color-mix(in srgb, var(--ku-brand) 55%, transparent);
+  background: var(--ku-brand-soft);
+}
+.ku-hub.done .ku-icon-badge { background: var(--ku-grad-brand); color: var(--ku-brand-on); box-shadow: var(--ku-shadow-brand); }
+.ku-hub .ku-done-badge, .ku-hub .ku-lock-badge { display: none; }
+.ku-hub.locked .ku-lock-badge { display: grid; }
+.ku-hub.done .ku-done-badge {
+  display: grid;
+  position: absolute; top: 0.9em; right: 0.9em;
+  width: 1.9em; height: 1.9em;
+  border-radius: var(--ku-radius-pill);
+  background: var(--ku-brand); color: var(--ku-brand-on);
+  place-items: center;
+}
+
+/* ── Фичекарточка равной высоты ──────────────────────────────────────── */
+.ku-feature {
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0.6em;
+  background: var(--ku-surface);
+  border: 1px solid var(--ku-border-soft);
+  border-radius: var(--ku-radius-l);
+  padding: var(--ku-space-m) var(--ku-space-s);
+  transition: transform var(--ku-dur-base) var(--ku-ease-out),
+              box-shadow var(--ku-dur-base) var(--ku-ease);
+}
+.ku-feature.hover-lift:hover { transform: translateY(-4px); box-shadow: var(--ku-shadow-m); }
+.ku-feature__word {
+  font-family: var(--ku-font-display);
+  font-size: clamp(1.6rem, 1rem + 3vw, 2.8rem);
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--ku-grad-brand);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+/* В МС основной шрифт — Montserrat; крупному слову даём вес пожирнее */
+:root[data-audience="ms"] .ku-feature__word { font-weight: 800; }
+.ku-feature__sub { flex: 1; font-size: 0.9rem; color: var(--ku-text-soft); line-height: 1.5; }

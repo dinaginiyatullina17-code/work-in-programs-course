@@ -1,0 +1,163 @@
+/* ════════════════════════════════════════════════════════════════════════
+   KU · ПОДРАЗДЕЛЫ (ЦА) — механизм «переодевания»
+   ────────────────────────────────────────────────────────────────────────
+   ГЛАВНАЯ ТОЧКА МАСШТАБИРОВАНИЯ. Два уровня выбора живут в корне документа:
+
+     <html data-audience="…">      ← ТРЕК / ЦА: задаёт ШРИФТ и базовую палитру
+     <html … data-direction="…">   ← НАПРАВЛЕНИЕ внутри трека: задаёт ЦВЕТА
+
+   Треки:
+     bk-base  — Burger King, база (по умолчанию). Шрифт Flame + Golos Text.
+     ms       — Менеджер смены. Шрифт Montserrat. 7 направлений, у каждого
+                свой основной + контрастный цвет (data-direction).
+     dr-zd    — Директор / Зам. директора (подготовлен, пока неактивен).
+     tu       — Территориальный управляющий (подготовлен, пока неактивен).
+
+   ─ КАК ЭТО РАБОТАЕТ ─
+   Компоненты ссылаются только на семантические токены (--ku-brand*,
+   --ku-contrast, --ku-grad-brand …), а НЕ на конкретный цвет. Поэтому:
+     • новый трек = один блок «шрифт + базовые цвета» ниже;
+     • новое направление = одна строка «main + contrast» ниже;
+     • в компонентах менять НИЧЕГО не нужно.
+
+   Оттенки (strong/press/soft/ring), кольцо фокуса, тень и градиент
+   ВЫВОДЯТСЯ автоматически из --ku-brand и --ku-contrast (блок «деривация»).
+   Достаточно задать всего два цвета — палитра «развернётся» сама.
+   ════════════════════════════════════════════════════════════════════════ */
+
+
+/* ═══ ДЕРИВАЦИЯ ═══════════════════════════════════════════════════════════
+   Универсальный вывод полной палитры из двух цветов (main + contrast).
+   Применяется к любому подразделу/направлению по умолчанию; конкретный
+   трек может переопределить отдельные значения (см. bk-base ниже). */
+:root {
+  --ku-brand:        var(--ku__flame-500);          /* фолбэк, если трек не задан */
+  --ku-contrast:     var(--ku__ember-500);          /* второй фирменный цвет */
+  --ku-contrast-on:  #ffffff;                       /* читаемый текст на контрасте */
+  --ku-brand-strong: color-mix(in srgb, var(--ku-brand) 82%, #000);
+  --ku-brand-press:  color-mix(in srgb, var(--ku-brand) 64%, #000);
+  --ku-brand-ring:   color-mix(in srgb, var(--ku-brand) 45%, transparent);
+  --ku-brand-soft:   color-mix(in srgb, var(--ku-brand) 12%, var(--ku__white));
+  --ku-shadow-brand: 0 10px 28px color-mix(in srgb, var(--ku-brand) 35%, transparent);
+  --ku-grad-brand:   linear-gradient(135deg, var(--ku-brand), var(--ku-contrast));
+  --ku-grad-brand-soft: linear-gradient(135deg,
+                        color-mix(in srgb, var(--ku-brand) 14%, var(--ku__white)),
+                        color-mix(in srgb, var(--ku-contrast) 12%, var(--ku__white)));
+}
+[data-theme="dark"] {
+  --ku-brand-soft: color-mix(in srgb, var(--ku-brand) 18%, var(--ku__night-800));
+}
+
+
+/* ═══ ТРЕК · БК · База ════════════════════════════════════════════════════
+   По умолчанию (в т.ч. когда атрибут не задан). Тюнингованный фирменный
+   градиент flame→ember и красный press — сохраняем вручную. */
+:root[data-audience="bk-base"] {
+  --ku-audience-name: "БК · База";
+  --ku-font-display: "Flame", "Golos Text", system-ui, sans-serif;
+  --ku-font-body:    "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Фоны — ТОЛЬКО белые (никакого бежевого). Нейтральный светло-серый
+     остаётся исключительно для внутренностей компонентов: дорожек прогресса,
+     подложек переключателей и т.п. */
+  --ku-surface:      #ffffff;
+  --ku-surface-2:    #f2f4f6;
+  --ku-divider:      #e9ecef;
+
+  --ku-brand:        var(--ku__flame-500);
+  --ku-contrast:     var(--ku__ember-500);
+  --ku-brand-strong: var(--ku__flame-600);
+  --ku-brand-press:  var(--ku__ember-500);
+  --ku-grad-brand:   linear-gradient(135deg, var(--ku__flame-400), var(--ku__ember-500));
+  --ku-grad-brand-soft: #ffffff;   /* обложка в БК-базе — белая */
+}
+
+/* ── Локальные акценты БК-базы ─────────────────────────────────────────
+   Ответ на «в bk-base всё оранжевое»: полная палитра бренда доступна
+   точечно. Повесь класс на карточку/блок — его ветка перекрасится в другой
+   фирменный цвет (ember/sky/green/amber/ink), оттенки выведутся сами.
+   Работает ТОЛЬКО в bk-base: в МС палитру жёстко диктует направление. */
+.ku-tint-ember { --_tint: var(--ku__ember-500); }
+.ku-tint-sky   { --_tint: var(--ku__sky-500); }
+.ku-tint-green { --_tint: var(--ku__green-500); }
+.ku-tint-amber { --_tint: var(--ku__amber-400); }
+.ku-tint-ink   { --_tint: var(--ku__ink-500); }
+
+:root[data-audience="bk-base"] [class*="ku-tint-"] {
+  --ku-brand:        var(--_tint);
+  --ku-brand-strong: color-mix(in srgb, var(--_tint) 78%, #000);
+  --ku-brand-press:  color-mix(in srgb, var(--_tint) 62%, #000);
+  --ku-brand-soft:   color-mix(in srgb, var(--_tint) 12%, var(--ku__white));
+  --ku-brand-ring:   color-mix(in srgb, var(--_tint) 45%, transparent);
+  --ku-shadow-brand: 0 10px 28px color-mix(in srgb, var(--_tint) 35%, transparent);
+  --ku-grad-brand:   linear-gradient(135deg, var(--_tint), color-mix(in srgb, var(--_tint) 70%, #3a1505));
+}
+
+
+/* ═══ ТРЕК · МС · Менеджер смены ══════════════════════════════════════════
+   Шрифт — Montserrat (для заголовков и текста). Цвета зависят от выбранного
+   направления (data-direction). Без направления — берём «Инженерный обход».
+   Тёмная тема для МС не предусмотрена (в шоукейсе переключатель прячется). */
+:root[data-audience="ms"] {
+  --ku-audience-name: "МС · Менеджер смены";
+  --ku-font-display: "Montserrat", system-ui, sans-serif;
+  --ku-font-body:    "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* дефолт направления (Инженерный обход) — на случай пустого data-direction */
+  --ku-brand:    var(--ku__ms-inzh);
+  --ku-contrast: var(--ku__ms-inzh-contrast);
+
+  /* — СОБСТВЕННАЯ ПАЛИТРА МС —
+     НИКАКОГО «крема» и коричневого из БК-базы. Нейтральная холодная база,
+     слегка подкрашенная основным цветом направления → каждое направление
+     выглядит цельно, а поверхности остаются чистыми и светлыми. Все значения
+     считаются от --ku-brand, поэтому обновляются при смене направления. */
+  --ku-bg:           #ffffff;
+  --ku-surface:      color-mix(in srgb, var(--ku-brand) 5%,  #f4f6f8);
+  --ku-surface-2:    color-mix(in srgb, var(--ku-brand) 9%,  #e9edf1);
+  --ku-card:         #ffffff;
+  --ku-elevated:     #ffffff;
+
+  --ku-text:         color-mix(in srgb, var(--ku-brand) 18%, #14181f);
+  --ku-text-soft:    color-mix(in srgb, var(--ku-text) 72%, transparent);
+  --ku-text-muted:   color-mix(in srgb, var(--ku-text) 48%, transparent);
+  --ku-text-on-dark: #ffffff;
+
+  --ku-border:       color-mix(in srgb, var(--ku-brand) 20%, #d9dee4);
+  --ku-border-soft:  color-mix(in srgb, var(--ku-brand) 10%, #e7ebef);
+  --ku-divider:      color-mix(in srgb, var(--ku-brand) 12%, #e7ebef);
+
+  /* нейтральные (холодные) тени вместо тёплых коричневых */
+  --ku-shadow-xs: 0 1px 2px rgba(20, 28, 42, 0.06);
+  --ku-shadow-s:  0 2px 8px rgba(20, 28, 42, 0.08);
+  --ku-shadow-m:  0 8px 24px rgba(20, 28, 42, 0.12);
+  --ku-shadow-l:  0 18px 48px rgba(20, 28, 42, 0.16);
+}
+
+/* ─ Направления МС: задаём ТОЛЬКО main + contrast, остальное выведется ─ */
+:root[data-audience="ms"][data-direction="inzh"]     { --ku-direction-name: "Инженерный обход";       --ku-brand: var(--ku__ms-inzh);     --ku-contrast: var(--ku__ms-inzh-contrast); }
+:root[data-audience="ms"][data-direction="lc"]       { --ku-direction-name: "Показатель LC";          --ku-brand: var(--ku__ms-lc);       --ku-contrast: var(--ku__ms-lc-contrast); }
+:root[data-audience="ms"][data-direction="restoran"] { --ku-direction-name: "Управление рестораном";  --ku-brand: var(--ku__ms-restoran); --ku-contrast: var(--ku__ms-restoran-contrast); }
+:root[data-audience="ms"][data-direction="lyudi"]    { --ku-direction-name: "Люди";                   --ku-brand: var(--ku__ms-lyudi);    --ku-contrast: var(--ku__ms-lyudi-contrast); }
+:root[data-audience="ms"][data-direction="produkty"] { --ku-direction-name: "Продукты";               --ku-brand: var(--ku__ms-produkty); --ku-contrast: var(--ku__ms-produkty-contrast); }
+:root[data-audience="ms"][data-direction="stancii"]  { --ku-direction-name: "Станции и касса";         --ku-brand: var(--ku__ms-stancii);  --ku-contrast: var(--ku__ms-stancii-contrast);  --ku-contrast-on: #14181f; }
+:root[data-audience="ms"][data-direction="king-avto"]{ --ku-direction-name: "Кинг Авто";               --ku-brand: var(--ku__ms-king);     --ku-contrast: var(--ku__ms-king-contrast);     --ku-contrast-on: #14181f; }
+
+
+/* ═══ ТРЕК · ДР/ЗД · Директор ресторана (подготовлен, пока неактивен) ═════ */
+:root[data-audience="dr-zd"] {
+  --ku-audience-name: "ДР/ЗД · Директор ресторана";
+  --ku-font-display: "Flame", "Golos Text", system-ui, sans-serif;
+  --ku-font-body:    "Golos Text", system-ui, sans-serif;
+  --ku-brand:    var(--ku__ember-500);
+  --ku-contrast: var(--ku__ink-600);
+}
+
+/* ═══ ТРЕК · ТУ · Территориальный управляющий (подготовлен, неактивен) ════ */
+:root[data-audience="tu"] {
+  --ku-audience-name: "ТУ · Территориальный управляющий";
+  --ku-font-display: "Flame", "Golos Text", system-ui, sans-serif;
+  --ku-font-body:    "Golos Text", system-ui, sans-serif;
+  --ku-brand:    var(--ku__ink-500);
+  --ku-contrast: var(--ku__flame-500);
+}
