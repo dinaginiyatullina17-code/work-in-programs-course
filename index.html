@@ -7,7 +7,7 @@
   <meta name="description" content="Практический курс по работе в Аксапте, Сервис Деске, Мобильном приложении и МД Аудит.">
   <title>Работа в программах</title>
   <link rel="stylesheet" href="css/kuds.css?v=20260831-1">
-  <link rel="stylesheet" href="style.css?v=20260904-3">
+  <link rel="stylesheet" href="style.css?v=20260904-4">
 </head>
 <body>
   <nav id="top-nav" class="hidden" aria-label="Навигация по курсу">
@@ -45,49 +45,52 @@
     <section class="page" id="page-axapta">
       <header class="chapter-hero violet"><div><span>01 / 05 · Учёт и операции</span><h1>Аксапта</h1><p>Как оформлять ежедневные операции ресторана</p></div></header>
       <div class="wrap lesson">
-        <section class="lead reveal"><h2>Аксапта помогает оформлять движение продуктов, работу сотрудников и кассовые операции</h2><p>В ней ты создаёшь списания, оформляешь поставки, проверяешь регистрации и табель, контролируешь сальдо и закрываешь инкассацию. Теперь разберём каждую задачу подробнее: перед скринкастом изучи порядок действий и контрольные точки.</p></section>
+        <section class="lead reveal"><h2>Аксапта помогает оформлять движение продуктов, работу сотрудников и кассовые операции</h2><p>В ней ты создаёшь списания, оформляешь поставки, проверяешь регистрации и табель, контролируешь сальдо и закрываешь инкассацию.</p></section>
+        <aside class="open-guide reveal"><strong>Открывай операции по очереди</strong><p>Нажимай на название каждой операции, изучай порядок действий, а затем переходи к скринкасту.</p></aside>
 
-        <section class="program-topic reveal">
-          <div class="topic-heading"><span>01</span><div><em>Списание</em><h2>Бракераж мяса</h2></div></div>
+        <details class="program-topic reveal">
+          <summary class="topic-heading"><span>01</span><div><em>Списание</em><h2>Бракераж мяса</h2></div></summary>
           <p>Создай журнал списания по фактическим данным бракеража и обязательно приложи подтверждающий файл.</p>
           <ol class="steps"><li><b>Открой маршрут:</b> Управление рестораном → Журналы формирования списания → Создать.</li><li>Выбери журнал «Бракераж», укажи сотрудника и добавь номенклатуры мяса для гамбургера, Воппера и Ангуса.</li><li>Внеси количество строго по данным проведённого бракеража.</li><li>Сохрани PDF проверки «Техмаршрут утро» из папки MDAudit на диск W и приложи его к журналу.</li><li>Выбери «Разноска» → «Пакет», отключи пакетную обработку и подтверди действие.</li></ol>
           <aside class="viewing-guide"><strong>Фокус скринкаста</strong><p>Проследи, где создаётся журнал, как заполняются строки, прикрепляется PDF и выполняется разноска.</p></aside>
           <div class="video-placeholder" role="img" aria-label="Заглушка скринкаста Бракераж мяса"><span class="play">▶</span><strong>Бракераж мяса</strong><small>Скринкаст будет добавлен позже</small></div>
-        </section>
+        </details>
 
-        <section class="program-topic reveal">
-          <div class="topic-heading"><span>02</span><div><em>Закупки</em><h2>Приём поставки</h2></div></div>
-          <p>Сначала сохрани сканы в правильной папке на диске W, затем прикрепи их к нужному заказу на покупку.</p>
-          <div class="split compact"><div><span>Обычная поставка</span><h3>Приложить документы</h3><ul><li>найти заказ по поставщику, номеру учёта и дате;</li><li>не открывая поставку, нажать «Вложение»;</li><li>выбрать «Создать файл» и приложить сканы.</li></ul></div><div><span>Газовые баллоны</span><h3>Создать и оформить заказ</h3><ul><li>создать заказ и добавить позицию газа;</li><li>внести даты и номера документов;</li><li>указать приход и возврат тары;</li><li>приложить документы.</li></ul></div></div>
-          <aside class="viewing-guide"><strong>Фокус скринкаста</strong><p>Сначала проследи работу с обычной поставкой: сохранить сканы на диск W → найти заказ по поставщику, номеру учёта и дате → приложить файлы. Затем разбери полный маршрут для газовых баллонов: новый заказ → продукт → EDI → заголовок → получение поступления → тара.</p></aside>
+        <details class="program-topic reveal">
+          <summary class="topic-heading"><span>02</span><div><em>Закупки</em><h2>Приём поставки</h2></div></summary>
+          <p>Сначала поставку принимают через ТСД, затем оформляют в Аксапте и завершают работу с бумажными документами.</p>
+          <section class="metric-path supply-path" aria-label="Этапы приёмки поставки"><span>Принять через ТСД</span><i>→</i><span>Внести в Аксапту</span><i>→</i><strong>Убрать накладные в папку</strong></section>
+          <aside class="focus"><strong>Работа с ТСД</strong><p>Обучение по приёмке доступно на самом ТСД. Если не найдёшь его самостоятельно, попроси Наставника помочь.</p></aside>
+          <div class="split compact"><div><span>Обычная поставка</span><h3>Оформить и сохранить документы</h3><ul><li>принять поставку через ТСД;</li><li>сохранить сканы на диск W;</li><li>найти заказ по поставщику, номеру учёта и дате;</li><li>приложить файлы через «Вложение»;</li><li>убрать бумажные накладные в папку для накладных в ресторане.</li></ul></div><div><span>Газовые баллоны</span><h3>Создать и оформить заказ</h3><ul><li>создать заказ и добавить позицию газа;</li><li>внести даты и номера документов;</li><li>указать приход и возврат тары;</li><li>приложить документы;</li><li>убрать накладные в папку для накладных.</li></ul></div></div>
+          <aside class="viewing-guide"><strong>Фокус скринкаста</strong><p>Обрати внимание, как в Аксапте прикрепить документы к обычной поставке и как оформить поставку газовых баллонов.</p></aside>
           <div class="video-placeholder" role="img" aria-label="Заглушка скринкаста Приём поставки"><span class="play">▶</span><strong>Приём поставки</strong><small>Скринкаст будет добавлен позже</small></div>
-        </section>
+        </details>
 
-        <section class="program-topic reveal">
-          <div class="topic-heading"><span>03</span><div><em>Персонал</em><h2>Регистрации сотрудников и табель</h2></div></div>
+        <details class="program-topic reveal">
+          <summary class="topic-heading"><span>03</span><div><em>Персонал</em><h2>Регистрации сотрудников и табель</h2></div></summary>
           <p>Сначала проверь отметки прихода и ухода за вчерашний день, затем обнови часы и сверь табель с расписанием.</p>
           <section class="metric-path" aria-label="Последовательность проверки"><span>Регистрации за вчера</span><i>→</i><span>Исправления</span><i>→</i><span>Обновить часы</span><i>→</i><strong>Сверить табель</strong></section>
           <ul class="check-list"><li>Ошибочную отметку пометь как ошибочную, затем создай корректную запись с сотрудником, датой, временем, типом и причиной ручного ввода.</li><li>После обновления часов проверь комментарии системы, ночные часы и часы сотрудников, закрывавших ресторан.</li><li>Для сотрудника из другого ресторана используй «Добавить подработчика/стажёра», после чего повторно обнови часы.</li></ul>
           <aside class="viewing-guide"><strong>Фокус скринкаста</strong><p>Посмотри, как исправляется регистрация, где обновляются часы и как добавить подработчика в табель.</p></aside>
           <div class="video-placeholder" role="img" aria-label="Заглушка скринкаста Регистрации сотрудников и табель"><span class="play">▶</span><strong>Регистрации сотрудников и табель</strong><small>Скринкаст будет добавлен позже</small></div>
-        </section>
+        </details>
 
-        <section class="program-topic reveal">
-          <div class="topic-heading"><span>04</span><div><em>Наличные</em><h2>Сальдо по кассе</h2></div></div>
+        <details class="program-topic reveal">
+          <summary class="topic-heading"><span>04</span><div><em>Наличные</em><h2>Сальдо по кассе</h2></div></summary>
           <p>Сальдо помогает сравнить расчётную сумму с фактической наличностью в ресторане.</p>
           <ol class="steps"><li><b>Открой маршрут:</b> Управление рестораном → Запросы → Кассовые операции → Сальдо по кассе.</li><li>Посмотри сальдо на текущий момент или выбери нужную дату либо период.</li><li>Пересчитай всю наличность ресторана.</li><li>Запиши в бланк сейфа фактическую сумму, сальдо и разницу между ними.</li></ol>
           <aside class="viewing-guide"><strong>Фокус скринкаста</strong><p>Запомни путь к сальдо, выбор периода и последовательность сверки с фактической наличностью.</p></aside>
           <div class="video-placeholder" role="img" aria-label="Заглушка скринкаста Сальдо"><span class="play">▶</span><strong>Сальдо по кассе</strong><small>Скринкаст будет добавлен позже</small></div>
-        </section>
+        </details>
 
-        <section class="program-topic reveal">
-          <div class="topic-heading"><span>05</span><div><em>Кассовые операции</em><h2>Инкассация</h2></div></div>
+        <details class="program-topic reveal">
+          <summary class="topic-heading"><span>05</span><div><em>Кассовые операции</em><h2>Инкассация</h2></div></summary>
           <p>Рассчитай сумму инкассации, внеси реквизиты и проверь, что покупюрная разбивка совпадает с расчётной суммой.</p>
           <ol class="steps"><li><b>Открой маршрут:</b> Управление рестораном → Кассовые операции → Журнал кассовых ордеров.</li><li>Найди журнал по дате, открой строки и выбери «Функции» → «Расчёт суммы инкассации».</li><li>В дополнительных данных укажи номер документа и номер сумки. При самоинкассации введи дату, при передаче службе — номер с пакета.</li><li>Внеси разбивку по купюрам. Если сумма не совпала, пересчитай наличность и исправь данные.</li><li>Закрой журнал и выполни «Одобрение документов» → «Одобрить».</li></ol>
           <aside class="focus"><strong>Важно</strong><p>Инкассацию лучше оформлять утром до открытия, чтобы в кассе осталась сумма для размена. Дальнейшие действия с банкоматом или пакетом выполняй по правилам ресторана.</p></aside>
           <aside class="viewing-guide"><strong>Фокус скринкаста</strong><p>Обрати внимание на расчёт суммы, дополнительные данные, покупюрную разбивку и одобрение документа.</p></aside>
           <div class="video-placeholder" role="img" aria-label="Заглушка скринкаста Инкассация"><span class="play">▶</span><strong>Инкассация</strong><small>Скринкаст будет добавлен позже</small></div>
-        </section>
+        </details>
         <div class="chapter-nav"><button onclick="go('home')">К содержанию</button><button class="next" onclick="advance('sd')">Следующая глава →</button></div>
       </div>
     </section>
@@ -116,10 +119,12 @@
     </section>
 
     <section class="page" id="page-md">
-      <header class="chapter-hero blue"><div><span>04 / 05 · Материалы готовятся</span><h1>МД Аудит</h1><p>Глава будет добавлена в следующей версии курса</p></div></header>
+      <header class="chapter-hero blue"><div><span>04 / 05 · Журналы смены</span><h1>МД Аудит</h1><p>Заполнять обязательные проверки в течение дня</p></div></header>
       <div class="wrap lesson">
-        <section class="coming-soon reveal"><span>Скоро</span><h2>Материалы по МД Аудит появятся позже</h2><p>Мы добавим вводную информацию и скринкаст, когда сценарий работы будет готов. Сейчас эту главу можно пропустить — она не влияет на завершение курса.</p></section>
-        <div class="video-placeholder reveal pending" role="img" aria-label="Заглушка будущего скринкаста МД Аудит"><span class="play">…</span><strong>МД Аудит</strong><small>Контент и скринкаст в разработке</small></div>
+        <section class="lead reveal"><h2>В МД Аудите управляющий сменой заполняет журналы в течение дня</h2><p>Проверки помогают зафиксировать выполнение ключевых процессов: уборку, технологические маршруты, приёмку отдельных поставок и сертификацию позиций.</p></section>
+        <section class="audit-list reveal"><article><b>01</b><div><h3>Приёмка ночной уборки</h3><p>Зафиксировать результат уборки перед началом работы ресторана.</p></div></article><article><b>02</b><div><h3>Технологический маршрут</h3><p>Заполнить проверку для нужного периода: утро, день, вечер или ночь.</p></div></article><article><b>03</b><div><h3>Приёмка поставок</h3><p>Оформить приёмку ИВЛ или поставки овощей.</p></div></article><article><b>04</b><div><h3>Сертификации по позициям</h3><p>Провести и зафиксировать требуемую сертификацию.</p></div></article></section>
+        <aside class="viewing-guide reveal"><strong>Фокус скринкаста</strong><p>В скринкасте будет показано, как создать новую проверку в МД Аудите.</p></aside>
+        <div class="video-placeholder reveal pending" role="img" aria-label="Заглушка будущего скринкаста МД Аудит"><span class="play">▶</span><strong>Как создать проверку в МД Аудите</strong><small>Скринкаст будет добавлен позже</small></div>
         <div class="chapter-nav"><button onclick="go('mp')">← Назад</button><button class="next" onclick="advance('summary')">Перейти к итогу →</button></div>
       </div>
     </section>
@@ -135,6 +140,19 @@
           <label><span>Ресторан временно не должен принимать заказы в Мобильном приложении.</span><select data-answer="shutdown"><option value="">Выбери ответ</option><option value="schedule">Изменить часы работы зала на один день</option><option value="drive">Отключить только Кинг Драйв</option><option value="shutdown">Временно отключить ресторан в админке Мобильного приложения</option></select></label>
           <label><span>Регистрации сотрудников исправлены. Что сделать перед проверкой табеля?</span><select data-answer="hours"><option value="">Выбери ответ</option><option value="trainee">Добавить подработчика или стажёра</option><option value="hours">Обновить часы в табель из регистраций работников</option><option value="error">Снова отметить регистрацию как ошибочную</option></select></label>
           <button class="check" type="button" onclick="checkQuiz()">Проверить</button><div id="feedback" class="feedback" role="status"></div>
+        </section>
+        <section class="memo reveal">
+          <div class="memo-heading"><div><span class="eyebrow">Памятка</span><h2>Операции в программах</h2></div></div>
+          <div class="memo-table-wrap"><table><thead><tr><th>Программа</th><th>Операция</th><th>Главное действие</th></tr></thead><tbody>
+            <tr><td>Аксапта</td><td>Бракераж мяса</td><td>Создать журнал списания, внести количество, приложить проверку и выполнить разноску.</td></tr>
+            <tr><td>Аксапта</td><td>Приём поставки</td><td>Принять через ТСД, оформить в Аксапте, приложить сканы и убрать накладные в папку.</td></tr>
+            <tr><td>Аксапта</td><td>Регистрации и табель</td><td>Проверить отметки, исправить ошибки, обновить часы и сверить табель.</td></tr>
+            <tr><td>Аксапта</td><td>Сальдо</td><td>Открыть сальдо, пересчитать наличность и записать разницу в бланк сейфа.</td></tr>
+            <tr><td>Аксапта</td><td>Инкассация</td><td>Рассчитать сумму, внести реквизиты и покупюрку, затем одобрить документ.</td></tr>
+            <tr><td>Сервис Деск</td><td>Заявка</td><td>Выбрать услугу, заполнить описание и приоритет, приложить файл и отправить.</td></tr>
+            <tr><td>Мобильное приложение</td><td>Режим работы</td><td>Изменить расписание или доступность канала и сохранить настройки.</td></tr>
+            <tr><td>МД Аудит</td><td>Проверки смены</td><td>Выбрать нужный журнал и создать проверку.</td></tr>
+          </tbody></table></div>
         </section>
         <section class="completion reveal" id="completion"><span>✓</span><div><h2 id="completion-title">Курс почти пройден</h2><p id="completion-text">Ответь на вопросы, чтобы завершить курс.</p></div><button id="complete" type="button" onclick="completeCourse()" disabled>Завершить</button></section>
         <div class="chapter-nav"><button onclick="go('md')">← Назад</button><button onclick="go('home')">К содержанию</button></div>
