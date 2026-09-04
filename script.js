@@ -1,5 +1,5 @@
 const pages=['axapta','sd','mp','md','summary'];
-const titles={axapta:'Аксапта',sd:'СД',mp:'МП',md:'МД',summary:'Итог'};
+const titles={axapta:'Аксапта',sd:'Сервис Деск',mp:'Мобильное приложение',md:'МД Аудит',summary:'Итог'};
 const unlockKey='work_in_programs_unlocked_v1';
 let unlocked=Number(localStorage.getItem(unlockKey)||0);
 function applyLocks(){document.querySelectorAll('.module-grid [data-page]').forEach(button=>{const locked=pages.indexOf(button.dataset.page)>unlocked;button.disabled=locked;button.setAttribute('aria-disabled',String(locked));const icon=button.querySelector('i');if(icon)icon.textContent=locked?'●':'→'})}
