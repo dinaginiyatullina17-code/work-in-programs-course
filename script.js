@@ -1,6 +1,6 @@
 const pages=['axapta','sd','mp','md','summary'];
 const titles={axapta:'Аксапта',sd:'Сервис Деск',mp:'Мобильное приложение',md:'МД Аудит',summary:'Итог'};
-const unlockKey='work_in_programs_unlocked_v1';
+const unlockKey='work_in_programs_unlocked_v2';
 let unlocked=Number(localStorage.getItem(unlockKey)||0);
 function unloadFrames(except){document.querySelectorAll('iframe[data-src]').forEach(frame=>{if(frame!==except&&frame.getAttribute('src'))frame.removeAttribute('src')});document.querySelectorAll('.video-embed').forEach(embed=>{if(embed.querySelector('iframe')!==except)embed.classList.remove('is-playing')})}
 function startVideo(button){const embed=button.closest('.video-embed'),frame=embed?.querySelector('iframe[data-src]');if(!frame)return;unloadFrames(frame);const source=new URL(frame.dataset.src);source.searchParams.set('autoplay','1');frame.src=source.toString();embed.classList.add('is-playing')}
