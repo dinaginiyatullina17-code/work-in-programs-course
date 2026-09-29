@@ -1,5 +1,5 @@
 (function(){
-  let api=null;
+  let api=null,initialized=false,finished=false;
   function findApi(win){
     let attempts=0;
     while(win&&attempts<20){
@@ -21,6 +21,7 @@
     if(!scorm)return false;
     const ok=scorm.LMSInitialize('')==='true';
     if(ok){
+      initialized=true;
       const status=scorm.LMSGetValue('cmi.core.lesson_status');
       if(!status||status==='not attempted'){
         scorm.LMSSetValue('cmi.core.lesson_status','incomplete');
@@ -31,13 +32,14 @@
   }
   function complete(){
     const scorm=getApi();
-    if(!scorm)return false;
+    if(!scorm||finished)return false;
+    if(!initialized&&!initialize())return false;
     scorm.LMSSetValue('cmi.core.lesson_status','passed');
     scorm.LMSSetValue('cmi.core.score.raw','100');
     scorm.LMSCommit('');
     return true;
   }
-  function finish(){const scorm=getApi();if(scorm)scorm.LMSFinish('')}
+  function finish(){const scorm=getApi();if(!scorm||finished)return false;const result=scorm.LMSFinish('');finished=true;initialized=false;return result==='true'}
   window.SCORM={initialize,complete,finish};
   addEventListener('DOMContentLoaded',initialize);
   addEventListener('pagehide',finish);
