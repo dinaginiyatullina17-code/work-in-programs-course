@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru" data-audience="ms" data-direction="restoran">
+<html lang="ru" data-audience="ms" data-direction="restoran" data-ku-course="rabota-v-programmah">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -161,12 +161,12 @@
             <tr><td>МД Аудит</td><td>Создание проверки</td><td>МД Аудит → вкладка «Проверки» → «+» → Создать проверку → дата → нужный чек-лист.</td></tr>
           </tbody></table></div>
         </section>
-        <section class="completion reveal" id="completion"><span>✓</span><div><h2 id="completion-title">Курс почти пройден</h2><p id="completion-text">Ответь на вопросы, чтобы завершить курс.</p></div><button id="complete" type="button" onclick="completeCourse()" disabled>Завершить</button></section>
+        <section class="completion reveal" id="completion"><span>✓</span><div><h2 id="completion-title">Курс почти пройден</h2><p id="completion-text">Ответь на вопросы, чтобы завершить курс.</p></div><button id="complete" type="button" data-ku-complete disabled>Завершить</button></section>
         <div class="chapter-nav"><button onclick="go('md')">← Назад</button><button onclick="go('home')">К содержанию</button></div>
       </div>
     </section>
   </main>
-  <script src="scorm.js"></script>
+  <script src="js/ku-scorm.js"></script>
   <script src="assets/peertube-player.min.js"></script>
   <script src="script.js?v=20261005-3"></script>
 </body>

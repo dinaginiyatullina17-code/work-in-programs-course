@@ -1,0 +1,11 @@
+{
+  "identifier": "rabota-v-programmah",
+  "title": "Работа в программах",
+  "scorm_id": "rabota-v-programmah-SCORM-1.2",
+  "scorm_ids": {
+    "manifest": "rabota-v-programmah",
+    "organization": "rabota-v-programmah-org",
+    "item": "rabota-v-programmah-item",
+    "resource": "rabota-v-programmah-resource"
+  }
+}
